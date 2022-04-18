@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unsplash_app/models/models.dart';
 import 'package:flutter_unsplash_app/repositories/photos/photo_repository.dart';
+import 'package:flutter_unsplash_app/widget/photo_card.dart';
 
 class PhotoScreen extends StatefulWidget {
   const PhotoScreen({Key? key}) : super(key: key);
@@ -53,9 +54,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
                         ),
                         itemBuilder: (context, index) {
                           final photo = photos[index];
-                          return Container(
-                            color: Colors.green,
-                          );
+                          return PhotoCard(photo: photo);
                         },
                         itemCount: photos.length,
                       );
