@@ -54,7 +54,11 @@ class _PhotoScreenState extends State<PhotoScreen> {
                         ),
                         itemBuilder: (context, index) {
                           final photo = photos[index];
-                          return PhotoCard(photo: photo);
+                          return PhotoCard(
+                            photos: photos,
+                            index: index,
+                            photo: photo,
+                          );
                         },
                         itemCount: photos.length,
                       );
