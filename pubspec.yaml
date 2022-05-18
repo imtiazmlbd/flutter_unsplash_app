@@ -38,6 +38,7 @@ dependencies:
   cached_network_image: ^3.2.0
   url_launcher: ^6.0.20
   equatable: ^2.0.0
+  flutter_bloc: ^8.0.1
 
 dev_dependencies:
   flutter_test:
