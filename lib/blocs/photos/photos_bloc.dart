@@ -10,6 +10,7 @@ import 'package:flutter_unsplash_app/repositories/photos/photo_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'photos_event.dart';
+
 part 'photos_state.dart';
 
 class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
@@ -19,7 +20,10 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
       : _photoRepository = photoRepository,
         super(PhotosState.initial()) {
     on<PhotosEvent>((event, emit) {
-      mapEventToState(event);
+      //mapEventToState(event);
+      if (event is PhotosSearchPhotos) {
+        _mapSearchPhotos(event);
+      }
     });
   }
 
@@ -29,11 +33,24 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
     return super.close();
   }
 
-  Stream<PhotosEvent> mapEventToState(
+  /*Stream<PhotosState> mapEventToState(
     PhotosEvent event,
   ) async* {
-    if (event is PhotosSearchPhotos) {}
-  }
+    if (event is PhotosSearchPhotos) {
+      yield* _mapSearchPhotos(event);
+    }
+  }*/
 
-  Stream<PhotosState> _mapPhotosSearchPhotos() async* {}
+  Stream<PhotosState> _mapSearchPhotos(PhotosSearchPhotos event) async* {
+    yield state.copyWith(query: event.query, status: PhotoStatus.loading);
+    try {
+      final photos = await _photoRepository.searchPhotos(query: event.query);
+      yield state.copyWith(photos: photos, status: PhotoStatus.success);
+    } on Exception catch (err) {
+      print(err);
+      yield state.copyWith(
+          failure: const Failure(message: 'Something went wrong!'),
+          status: PhotoStatus.error);
+    }
+  }
 }
